@@ -39,7 +39,8 @@
 </script>
 <body>
 <div>
-    <a target="_blank" href="<%=path%>/stubEdit/dispachInput">生成nginx脚本</a>
+    <a target="_blank" href="<%=path%>/stubEdit/dispachInput">生成nginx脚本</a> &nbsp;&nbsp;
+    <a target="_blank" href="<%=path%>/stubEdit/add">添加新接口</a>
 </div>
 <div>
     <form action="<%=path%>/">
