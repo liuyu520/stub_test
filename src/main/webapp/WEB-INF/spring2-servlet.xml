@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.2.xsd
+           http://www.springframework.org/schema/mvc 
+           http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<!-- HandlerMapping -->
+	<bean
+		class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+
+	<!-- HandlerAdapter -->
+	<bean
+		class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<!-- 使用注解 -->
+	<mvc:annotation-driven />
+	<!-- 处理器 -->
+	<!-- <bean name="/hello" class="com.mvc.jn.controller.HelloWorldController"/> -->
+	<context:component-scan base-package="com,oa">
+	</context:component-scan>
+	<mvc:resources mapping="/html/static/**" location="/WEB-INF/static/"/>
+	<mvc:resources mapping="/static/**" location="/WEB-INF/static/" />
+	<!-- 用于访问图片,比如"http://localhost:8080/springMVC_upload/upload/image/20140911/20140911222330_383.jpg" -->
+	<mvc:resources mapping="/upload/**" location="/upload/" />
+	<mvc:resources mapping="/html/**" location="/WEB-INF/html/" />
+	<mvc:resources mapping="/html/version/**" location="/WEB-INF/html/version/" />
+	<mvc:resources mapping="/ajl/kindeditor/**" location="/WEB-INF/static/kindeditor/" />
+	<!--定义异常处理页面 -->
+	<bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop
+					key="org.springframework.transaction.CannotCreateTransactionException">dbNotConnected</prop>
+				<prop key="org.hibernate.exception.JDBCConnectionException">dbNotConnected</prop>
+				<prop key="org.hibernate.TransactionException">dbNotConnected</prop>
+				<prop key="java.sql.SQLException">dbNotConnected</prop>
+				<prop key="java.net.ConnectException">dbNotConnected</prop>
+				
+				<prop key="org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException">404_custom</prop>
+			</props>
+		</property>
+	</bean>
+	<!--/定义异常处理页面 -->
+</beans>
