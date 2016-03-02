@@ -39,7 +39,9 @@
                 success: function (json2) {
                     if (json2.cmd) {
                         $('textarea').val(json2.cmd).focus();
-                        $('span.correct').text('成功');
+                        $correct=$('span.correct');
+                        $correct.text('成功');
+                        $correct.show('normal');
                         setTimeout(hideMessage,5000);
                     } else {
                         alert("失败")
