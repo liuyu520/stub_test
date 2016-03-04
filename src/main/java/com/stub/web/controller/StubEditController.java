@@ -1,8 +1,8 @@
 package com.stub.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
+import com.stub.bean.Address;
 import oa.bean.stub.ReadAndWriteResult;
 import oa.util.HWUtils;
 
@@ -16,6 +16,7 @@ import com.common.dict.Constant2;
 import com.common.util.SystemHWUtil;
 import com.io.hw.json.HWJacksonUtils;
 import com.string.widget.util.ValueWidget;
+import com.stub.bean.Student;
 
 /***
  * stub test后台管理
@@ -165,5 +166,19 @@ public class StubEditController {
 			model.addAttribute("targetUrl",targetUrl);
 		}
 		return "dispach";
+	}
+	
+	/***
+	 * 用于测试pojo传递参数<br>
+	 * http://127.0.0.1:80/stub_test/stubEdit/param?address.street=abc
+	 * @param student
+	 * @return
+	 */
+	@RequestMapping(value="/param", produces = SystemHWUtil.RESPONSE_CONTENTTYPE_JSON_UTF)
+	@ResponseBody
+	public String para(Student student){
+		Address address=student.getAddress();
+		System.out.println(address);
+		return HWJacksonUtils.getJsonP(address);
 	}
 }
