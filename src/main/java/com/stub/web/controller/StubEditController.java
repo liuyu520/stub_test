@@ -1,8 +1,11 @@
 package com.stub.web.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.stub.bean.Address;
+
 import oa.bean.stub.ReadAndWriteResult;
 import oa.util.HWUtils;
 
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.common.dict.Constant2;
 import com.common.util.SystemHWUtil;
+import com.io.hw.file.util.FileUtils;
 import com.io.hw.json.HWJacksonUtils;
 import com.string.widget.util.ValueWidget;
 import com.stub.bean.Student;
@@ -181,4 +185,11 @@ public class StubEditController {
 		System.out.println(address);
 		return HWJacksonUtils.getJsonP(address);
 	}
+	@RequestMapping(value = "/test/body")
+    @ResponseBody
+    public String shareTest( Model model, HttpServletRequest request) throws IOException {
+        String body= FileUtils.getFullContent4(request.getInputStream(),"UTF-8");
+        System.out.println(body);
+        return body;
+    }
 }

@@ -21,6 +21,7 @@
     <link rel="stylesheet" type="text/css" href="<%=path%>/static/css/global.css">
     <script type="text/javascript" src="http://hbjltv.com/static/js/jquery-1.11.1.js"></script>
     <script type="text/javascript" src="http://hbjltv.com/static/js/common_util.js"></script>
+    <script type="text/javascript" src="http://hbjltv.com/static/js/jquery.form.js"></script>
 </head>
 <style>
     .success{
@@ -37,9 +38,9 @@
         $('div.error').hide();
         $('div.success').hide();
     };
-    $(function () {
+   /* $(function () {
         setTimeout(hideMessage,5000);
-    });
+    });*/
     var addAction= function () {
         $('#servletAction2').val($('#servletAction1').val());
         var action=$('#formSave').attr('action');
@@ -50,6 +51,29 @@
     }
     var saveAction=function(){
     	$('#servletAction2').val($('#servletAction1').val());
+        var options = {
+            type: "POST",
+            dataType: 'json',
+            success: function (json2) {
+                if (json2.result) {
+                    var $success=$('div.success');
+                    $success.show();
+                    $success.html("更新成功");
+                    setTimeout(hideMessage,5000);
+                } else {
+                    pleaseLoginFirst();
+                    hideLoadPanel();
+                }
+            }
+            ,
+            error: function (er) {
+                console.log(er);
+                alert(er.responseText);
+            }
+        };
+        //采用Ajax 提交表单,页面不会跳转
+
+        $('#formSave').ajaxSubmit(options);
     }
 </script>
 <body>
@@ -66,11 +90,11 @@
 <div class="error" >${errorMessage}</div>
 <div class="success" >${tips}</div>
 <div>
-    <form action="<%=path%>/stubEdit/update" method="post" id="formSave" >
+    <form action="<%=path%>/stubEdit/updateJson" method="post" id="formSave" >
         <input type="hidden" id="servletAction2" name="servletAction" VALUE="${servletAction}" >
-        <textarea name="content" id="content" cols="85" rows="40">${content }</textarea>
+        <textarea name="content" id="content" cols="85" rows="30">${content }</textarea>
         <br>
-        <input type="submit" onclick="saveAction();" value="确认更新" > &nbsp;<input type="submit" onclick="addAction();" value="新增" >
+        <input type="button" class="submit" onclick="saveAction();" value="确认更新" > &nbsp;<input type="submit" onclick="addAction();" value="新增" >
     </form>
 
 </div>

@@ -95,6 +95,14 @@ input[type=submit] {
     color: #ffffff;
     cursor: pointer;
 }
+input[type=button].submit {
+    padding: 10px 30px;
+    border: 0 none;
+    background-color: #05a1e7;
+    font-size: 30px;
+    color: #ffffff;
+    cursor: pointer;
+}
 table.stubList tr:nth-child(2n+2){
     background-color:#defcfe;
 }
