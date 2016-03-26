@@ -92,7 +92,7 @@
 <div>
     <form action="<%=path%>/stubEdit/updateJson" method="post" id="formSave" >
         <input type="hidden" id="servletAction2" name="servletAction" VALUE="${servletAction}" >
-        <textarea name="content" id="content" cols="85" rows="30">${content }</textarea>
+        <textarea name="content" id="content" cols="85" rows="28">${content }</textarea>
         <br>
         <input type="button" class="submit" onclick="saveAction();" value="确认更新" > &nbsp;<input type="submit" onclick="addAction();" value="新增" >
     </form>
