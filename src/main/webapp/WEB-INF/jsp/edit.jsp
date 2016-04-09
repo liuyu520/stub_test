@@ -61,8 +61,13 @@
                     $success.html("更新成功");
                     setTimeout(hideMessage,5000);
                 } else {
-                    pleaseLoginFirst();
-                    hideLoadPanel();
+                    console.log(json2);
+//                    pleaseLoginFirst();
+//                    hideLoadPanel();
+                    var $error=$('div.error');
+                    $error.show();
+                    $error.html(json2.errorMessage);
+                    setTimeout(hideMessage,5000);
                 }
             }
             ,

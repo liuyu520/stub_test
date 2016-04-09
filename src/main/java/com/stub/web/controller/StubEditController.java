@@ -20,6 +20,7 @@ import com.common.util.SystemHWUtil;
 import com.io.hw.file.util.FileUtils;
 import com.io.hw.json.HWJacksonUtils;
 import com.string.widget.util.ValueWidget;
+import com.string.widget.util.XSSUtil;
 import com.stub.bean.Student;
 
 /***
@@ -44,6 +45,7 @@ public class StubEditController {
 			if(ValueWidget.isNullOrEmpty(charset)){
 				charset=SystemHWUtil.CHARSET_UTF;
 			}
+            servletAction = XSSUtil.deleteXSS(servletAction);
 			String prefix = getPrefix(servletAction);
 			ReadAndWriteResult readAndWriteResult = HWUtils.stub(request, prefix +servletAction/*+ StubController.stub_file_Suffix*/, charset);
 			if(readAndWriteResult.isResult()){
@@ -85,6 +87,7 @@ public class StubEditController {
 	@RequestMapping("/update")
 	public String update(HttpServletRequest request, Model model, @RequestParam(required = true)String servletAction, @RequestParam(required = true)String content){
 		if(!ValueWidget.isNullOrEmpty(servletAction)){
+			servletAction = XSSUtil.deleteXSS(servletAction);
 			ReadAndWriteResult readAndWriteResult = updateStub(request, servletAction, content);
 			if (!afterDeal(model, servletAction, content, readAndWriteResult)) return "edit";
 		}
@@ -94,6 +97,7 @@ public class StubEditController {
 	@ResponseBody
 	public String updateJson(HttpServletRequest request, Model model, @RequestParam(required = true)String servletAction, @RequestParam(required = true)String content){
 		if(!ValueWidget.isNullOrEmpty(servletAction)){
+            servletAction = XSSUtil.deleteXSS(servletAction);
 			ReadAndWriteResult readAndWriteResult = updateStub(request, servletAction, content);
 			return HWJacksonUtils.getJsonP(readAndWriteResult);
 		}
@@ -104,6 +108,7 @@ public class StubEditController {
 	@ResponseBody
 	public String saveJson(HttpServletRequest request, Model model, @RequestParam(required = true)String servletAction, @RequestParam(required = true)String content){
 		if(!ValueWidget.isNullOrEmpty(servletAction)){
+            servletAction = XSSUtil.deleteXSS(servletAction);
 			ReadAndWriteResult readAndWriteResult = saveStub(request, servletAction, content);
 			return HWJacksonUtils.getJsonP(readAndWriteResult);
 		}
@@ -121,6 +126,7 @@ public class StubEditController {
 	@RequestMapping("/save")
 	public String save(HttpServletRequest request,Model model, @RequestParam(required = true)String servletAction,@RequestParam(required = true)String content){
 		if(!ValueWidget.isNullOrEmpty(servletAction)){
+			servletAction = XSSUtil.deleteXSS(servletAction);
 			ReadAndWriteResult readAndWriteResult = saveStub(request, servletAction, content);
 			if (!afterDeal(model, servletAction, content, readAndWriteResult)) return "edit";
 		}
