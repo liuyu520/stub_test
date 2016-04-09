@@ -72,6 +72,9 @@
     </style>
 </head>
 <body>
+<a target="_blank" href="<%=path%>/">stub接口列表</a>&nbsp;&nbsp;<a target="_blank" href="<%=path%>/old_content">stub历史记录</a>
+&nbsp;&nbsp;<a target="_blank" href="<%=path%>/stubEdit/add">添加新接口</a>
+<br>
 <div>
     <form action="">
         <table>

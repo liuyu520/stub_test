@@ -49,6 +49,9 @@ a {
     text-decoration: none;
     font-size: 18px;
 }
+a:hover{
+    text-decoration: underline;
+}
 
 ul.operate-list li {
     display: inline;
@@ -95,6 +98,10 @@ input[type=submit] {
     color: #ffffff;
     cursor: pointer;
 }
+input[type=submit]:hover{
+    background-color: #0376e7;
+    border-radius: 5px;
+}
 input[type=button].submit {
     padding: 10px 30px;
     border: 0 none;
@@ -102,6 +109,10 @@ input[type=button].submit {
     font-size: 30px;
     color: #ffffff;
     cursor: pointer;
+}
+input[type=button].submit:hover{
+    background-color: #0376e7;
+    border-radius: 5px;
 }
 table.stubList tr:nth-child(2n+2){
     background-color:#defcfe;

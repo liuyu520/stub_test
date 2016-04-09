@@ -59,10 +59,12 @@ public class StubEditController {
 				model.addAttribute("tips", tips);
 			}
 		}
+        model.addAttribute("action","编辑");
 		return "edit";
 	}
 	@RequestMapping("/add")
 	public String add(HttpServletRequest request,Model model, String charset,String tips){
+        model.addAttribute("action","新增");
 		return "edit";
 	}
 

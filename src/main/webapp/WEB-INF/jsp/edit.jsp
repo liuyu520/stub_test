@@ -22,6 +22,11 @@
     <script type="text/javascript" src="http://hbjltv.com/static/js/jquery-1.11.1.js"></script>
     <script type="text/javascript" src="http://hbjltv.com/static/js/common_util.js"></script>
     <script type="text/javascript" src="http://hbjltv.com/static/js/jquery.form.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('input[name=servletAction]').focus();
+        })
+    </script>
 </head>
 <style>
     .success{
@@ -42,32 +47,48 @@
         setTimeout(hideMessage,5000);
     });*/
     var addAction= function () {
-        $('#servletAction2').val($('#servletAction1').val());
+        var servletActionPath=$('#servletAction1').val();
+        if(!servletActionPath){
+            showError("请输入接口路径");
+            return false;
+        }
+        $('#servletAction2').val(servletActionPath);
         var action=$('#formSave').attr('action');
         console.log(action);
         //var a="a/b/c/d";console.log(a);var index=a.lastIndexOf('/');console.log(a.substring(0,index+1))  output:a/b/c/
         var index=action.lastIndexOf('/')
         $('#formSave').attr('action',action.substring(0,index+1)+"save");
+        return true;
+    }
+    var showError=function (message) {
+        var $error=$('div.error');
+        $error.show();
+        $error.html(message);
+        setTimeout(hideMessage,5000);
+    }
+    var showSuccess=function (message) {
+        var $success=$('div.success');
+        $success.show();
+        $success.html(message);
+        setTimeout(hideMessage,5000);
     }
     var saveAction=function(){
-    	$('#servletAction2').val($('#servletAction1').val());
+        var servletActionPath=$('#servletAction1').val();
+        if(!servletActionPath){
+            showError("请输入接口路径");
+            return;
+        }
+    	$('#servletAction2').val(servletActionPath);
         var options = {
             type: "POST",
             dataType: 'json',
             success: function (json2) {
                 if (json2.result) {
-                    var $success=$('div.success');
-                    $success.show();
-                    $success.html("更新成功");
-                    setTimeout(hideMessage,5000);
+                    showSuccess("更新成功");
                 } else {
                     console.log(json2);
-//                    pleaseLoginFirst();
 //                    hideLoadPanel();
-                    var $error=$('div.error');
-                    $error.show();
-                    $error.html(json2.errorMessage);
-                    setTimeout(hideMessage,5000);
+                    showError(json2.errorMessage);
                 }
             }
             ,
@@ -84,7 +105,7 @@
 <body>
 <div>
     <form action="<%=path%>/stubEdit/search">
-    编辑的接口: <input type="text" id="servletAction1" name="servletAction" VALUE="${servletAction}" style="width: 400px;" > <input type="submit" value="搜索" >
+    ${action}的接口: <input type="text" id="servletAction1" name="servletAction" VALUE="${servletAction}" style="width: 400px;" placeholder="/api/v1/appstore/queryOrgBuyProductInfo" > <input type="submit" value="搜索" >
     
     </form>
     
@@ -99,7 +120,7 @@
         <input type="hidden" id="servletAction2" name="servletAction" VALUE="${servletAction}" >
         <textarea name="content" id="content" cols="85" rows="28">${content }</textarea>
         <br>
-        <input type="button" class="submit" onclick="saveAction();" value="确认更新" > &nbsp;<input type="submit" onclick="addAction();" value="新增" >
+        <input type="button" class="submit" onclick="saveAction();" value="确认更新" > &nbsp;<input type="submit" onclick="return addAction();" value="新增" >
     </form>
 
 </div>

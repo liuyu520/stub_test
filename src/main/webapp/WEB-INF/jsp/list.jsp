@@ -35,7 +35,9 @@
     }
 </style>
 <script type="text/javascript">
-
+$(function () {
+    $('input[name=keyWord]').focus();
+})
 </script>
 <body>
 <div>
@@ -44,7 +46,7 @@
 </div>
 <div>
     <form action="<%=path%>/">
-    搜索: <input type="text"  name="keyWord" VALUE="${keyWord}" style="width: 400px;" > <input type="submit" value="搜索" >
+    搜索: <input type="text"  name="keyWord" VALUE="${keyWord}" style="width: 400px;" placeholder="/api/v1/appstore/queryOrgBuyProductInfo" > <input type="submit" value="搜索" >
     
     </form>
     
