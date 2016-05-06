@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://"
@@ -118,7 +120,14 @@
 <div>
     <form action="<%=path%>/stubEdit/updateJson" method="post" id="formSave" >
         <input type="hidden" id="servletAction2" name="servletAction" VALUE="${servletAction}" >
-        <textarea name="content" id="content" cols="85" rows="28">${content }</textarea>
+        <div class="stubRange">
+            <c:forEach items="${stubs.stubs }" var="stub" varStatus="status">
+                <textarea data-index="${status.index}" style="float: left;width:500px;"
+                          <c:if test="${stubs.selectedIndex==status.index}">class="selected"</c:if> name="content"
+                          cols="85" rows="28">${stub }</textarea>
+            </c:forEach>
+
+        </div>
         <br>
         <input type="button" class="submit" onclick="saveAction();" value="确认更新" > &nbsp;<input type="submit" onclick="return addAction();" value="新增" >
     </form>

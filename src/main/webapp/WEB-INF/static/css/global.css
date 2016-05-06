@@ -124,3 +124,14 @@ table.stubList tr:nth-child(n+2):hover
 table{
     border-collapse: collapse;
 }
+
+.selected {
+    background-color: rgba(241, 181, 253, 0.09)
+}
+
+div.stubRange {
+    width: 1200px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    height: 501px;
+}

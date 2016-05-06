@@ -50,7 +50,8 @@ public class StubEditController {
 			ReadAndWriteResult readAndWriteResult = HWUtils.stub(request, prefix +servletAction/*+ StubController.stub_file_Suffix*/, charset);
 			if(readAndWriteResult.isResult()){
 				model.addAttribute("content", readAndWriteResult.getContent());
-				model.addAttribute("url",readAndWriteResult.getUrl());
+                model.addAttribute("stubs", readAndWriteResult.getStubRange());
+                model.addAttribute("url",readAndWriteResult.getUrl());
 			}else{
 				model.addAttribute(Constant2.RESPONSE_KEY_ERROR_MESSAGE, readAndWriteResult.getErrorMessage());
 			}
