@@ -24,6 +24,7 @@
     <script type="text/javascript" src="http://hbjltv.com/static/js/jquery-1.11.1.js"></script>
     <script type="text/javascript" src="http://hbjltv.com/static/js/common_util.js"></script>
     <script type="text/javascript" src="http://hbjltv.com/static/js/jquery.form.js"></script>
+    <script type="text/javascript" src="<%=path%>/static/js/stub.js"></script>
     <script type="text/javascript">
         $(function () {
             $('input[name=servletAction]').focus();

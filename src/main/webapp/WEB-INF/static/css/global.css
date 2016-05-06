@@ -126,7 +126,9 @@ table{
 }
 
 .selected {
-    background-color: rgba(241, 181, 253, 0.09)
+    background-color: rgba(241, 181, 253, 0.09);
+    font-weight: bold;
+    font-size: 12px;
 }
 
 div.stubRange {
