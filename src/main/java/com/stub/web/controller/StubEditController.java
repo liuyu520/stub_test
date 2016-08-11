@@ -1,27 +1,23 @@
 package com.stub.web.controller;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.stub.bean.Address;
-
-import oa.bean.stub.ReadAndWriteResult;
-import oa.util.HWUtils;
-
-import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.common.dict.Constant2;
 import com.common.util.SystemHWUtil;
 import com.io.hw.file.util.FileUtils;
 import com.io.hw.json.HWJacksonUtils;
 import com.string.widget.util.ValueWidget;
 import com.string.widget.util.XSSUtil;
+import com.stub.bean.Address;
 import com.stub.bean.Student;
+import oa.bean.stub.ReadAndWriteResult;
+import oa.util.HWUtils;
+import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /***
  * stub test后台管理
@@ -31,6 +27,16 @@ import com.stub.bean.Student;
 @Component
 @RequestMapping("/stubEdit")
 public class StubEditController {
+    private static String getPrefix(String servletAction) {
+        String prefix = null;
+        if (servletAction.startsWith(Constant2.Slash)) {
+            prefix = Constant2.stub_folder_no_Slash;
+        } else {
+            prefix = Constant2.stub_folder;
+        }
+        return prefix;
+    }
+
 	/***
 	 * 仅仅进入页面
 	 * @return
@@ -39,6 +45,7 @@ public class StubEditController {
 	public String searchInput(){
 		return "edit";
 	}
+
 	@RequestMapping("/search")
 	public String search(HttpServletRequest request,Model model, @RequestParam(required = true)String servletAction,String charset,String tips){
 		if(!ValueWidget.isNullOrEmpty(servletAction)){
@@ -63,20 +70,11 @@ public class StubEditController {
         model.addAttribute("action","编辑");
 		return "edit";
 	}
+
 	@RequestMapping("/add")
 	public String add(HttpServletRequest request,Model model, String charset,String tips){
         model.addAttribute("action","新增");
 		return "edit";
-	}
-
-	private static String getPrefix(String servletAction) {
-		String prefix=null;
-		if(servletAction.startsWith(Constant2.Slash)){
-            prefix= Constant2.stub_folder_no_Slash;
-        }else{
-            prefix=Constant2.stub_folder;
-        }
-		return prefix;
 	}
 
 	/***
@@ -98,8 +96,9 @@ public class StubEditController {
 	}
 	@RequestMapping(value="/updateJson", produces = SystemHWUtil.RESPONSE_CONTENTTYPE_JSON_UTF)
 	@ResponseBody
-	public String updateJson(HttpServletRequest request, Model model, @RequestParam(required = true)String servletAction, @RequestParam(required = true)String content){
-		if(!ValueWidget.isNullOrEmpty(servletAction)){
+    public String updateJson(HttpServletRequest request, Model model, @RequestParam(required = true) String servletAction, @RequestParam(required = true) String content
+            , Integer index) {
+        if(!ValueWidget.isNullOrEmpty(servletAction)){
             servletAction = XSSUtil.deleteXSS(servletAction);
 			ReadAndWriteResult readAndWriteResult = updateStub(request, servletAction, content);
 			return HWJacksonUtils.getJsonP(readAndWriteResult);
@@ -145,12 +144,12 @@ public class StubEditController {
      */
 	private ReadAndWriteResult updateStub(HttpServletRequest request, String servletAction, String content) {
 		String prefix = getPrefix(servletAction);
-		return HWUtils.updateStub(request, prefix +servletAction+ Constant2.stub_file_Suffix, content, SystemHWUtil.CHARSET_UTF);
-	}
+        return HWUtils.updateStub(request, prefix + servletAction + Constant2.stub_file_Suffix, content, SystemHWUtil.CHARSET_UTF, 0);
+    }
 	private ReadAndWriteResult saveStub(HttpServletRequest request,  String servletAction, String content) {
 		String prefix = getPrefix(servletAction);
-		return HWUtils.saveStub(request, prefix +servletAction+ Constant2.stub_file_Suffix, content, SystemHWUtil.CHARSET_UTF);
-	}
+        return HWUtils.saveStub(request, prefix + servletAction + Constant2.stub_file_Suffix, content, SystemHWUtil.CHARSET_UTF, 0);
+    }
 
 	/***
 	 * 判断操作结果
