@@ -10,6 +10,7 @@ import com.stub.bean.Address;
 import com.stub.bean.Student;
 import oa.bean.stub.ReadAndWriteResult;
 import oa.util.HWUtils;
+import oa.util.SpringMVCUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -105,6 +106,52 @@ public class StubEditController {
 		}
 		return Constant2.RESPONSE_WRONG_RESULT;
 	}
+    @RequestMapping(value="/updateJsonOne", produces = SystemHWUtil.RESPONSE_CONTENTTYPE_JSON_UTF)
+    @ResponseBody
+    public String updateJsonOneOption(HttpServletRequest request, Model model, @RequestParam(required = true) String servletAction, @RequestParam(required = true) String content
+            , Integer index) throws IOException {
+        if(!ValueWidget.isNullOrEmpty(servletAction)){
+            servletAction = XSSUtil.deleteXSS(servletAction);
+            ReadAndWriteResult readAndWriteResult =updateStubOneOption (request, servletAction, content,index);// updateStub();
+            return HWJacksonUtils.getJsonP(readAndWriteResult);
+        }
+        return Constant2.RESPONSE_WRONG_RESULT;
+    }
+    /***
+     * 序号保存在session,<br >
+     * 并没有写入文件
+     * @param request
+     * @param model
+     * @param servletAction
+     * @param index
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="/updateIndex", produces = SystemHWUtil.RESPONSE_CONTENTTYPE_JSON_UTF)
+    @ResponseBody
+    public String updateJsonSelectIndex(HttpServletRequest request, Model model, @RequestParam(required = true) String servletAction
+            , Integer index) throws IOException {
+        if(!ValueWidget.isNullOrEmpty(servletAction)){
+            servletAction = XSSUtil.deleteXSS(servletAction);
+            String prefix = getPrefix(servletAction);
+            System.out.println("set key:"+prefix + servletAction+"selectedIndex");
+            //session的key,型如:stub//request_a
+            SpringMVCUtil.saveObject(prefix + servletAction+"selectedIndex",String.valueOf(index));
+            return Constant2.RESPONSE_RIGHT_RESULT;
+        }
+        return Constant2.RESPONSE_WRONG_RESULT;
+    }
+    /*@RequestMapping(value="/addJsonOne", produces = SystemHWUtil.RESPONSE_CONTENTTYPE_JSON_UTF)
+    @ResponseBody
+    public String addJsonOneOption(HttpServletRequest request, Model model, @RequestParam(required = true) String servletAction, @RequestParam(required = true) String content
+            , Integer index) throws IOException {
+        if(!ValueWidget.isNullOrEmpty(servletAction)){
+            servletAction = XSSUtil.deleteXSS(servletAction);
+            ReadAndWriteResult readAndWriteResult =addStubOneOption (request, servletAction, content);
+            return HWJacksonUtils.getJsonP(readAndWriteResult);
+        }
+        return Constant2.RESPONSE_WRONG_RESULT;
+    }*/
 
 	@RequestMapping(value="/saveJson", produces = SystemHWUtil.RESPONSE_CONTENTTYPE_JSON_UTF)
 	@ResponseBody
@@ -126,15 +173,27 @@ public class StubEditController {
      * @return
      */
 	@RequestMapping("/save")
-	public String save(HttpServletRequest request,Model model, @RequestParam(required = true)String servletAction,@RequestParam(required = true)String content){
+	public String save(HttpServletRequest request,Model model, @RequestParam(required = true)String servletAction,@RequestParam(required = true)String[] content){
 		if(!ValueWidget.isNullOrEmpty(servletAction)){
 			servletAction = XSSUtil.deleteXSS(servletAction);
-			ReadAndWriteResult readAndWriteResult = saveStub(request, servletAction, content);
-			if (!afterDeal(model, servletAction, content, readAndWriteResult)) return "edit";
+			ReadAndWriteResult readAndWriteResult = saveStub(request, servletAction, content[0]);
+			if (!afterDeal(model, servletAction, content[0], readAndWriteResult)) return "edit";
 		}
 		return Constant2.SPRINGMVC_REDIRECT_PREFIX+"stubEdit/search?servletAction="+servletAction;
 	}
 
+    private ReadAndWriteResult updateStubOneOption(HttpServletRequest request, String servletAction, String content,int index) throws IOException {
+        String prefix = getPrefix(servletAction);
+        ReadAndWriteResult readAndWriteResult = new ReadAndWriteResult();
+        HWUtils.writeStubFileOneOption(content, /*SystemHWUtil.CHARSET_UTF,*/readAndWriteResult,prefix + servletAction ,  index);
+        return readAndWriteResult;
+    }
+    private ReadAndWriteResult addStubOneOption(HttpServletRequest request, String servletAction, String content) throws IOException {
+        String prefix = getPrefix(servletAction);
+        ReadAndWriteResult readAndWriteResult = new ReadAndWriteResult();
+        HWUtils.addOneOptionStub(content, /*SystemHWUtil.CHARSET_UTF,*/readAndWriteResult,prefix + servletAction );
+        return readAndWriteResult;
+    }
 	/***
 	 * 更新stub 接口
 	 * @param request

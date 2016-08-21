@@ -113,7 +113,7 @@
             data:{"index":selectedIndex,"servletAction":$('#servletAction1').val()},
             success: function (json2) {
                 if (json2.result) {
-                    showSuccess("更新选中项成功");
+                    showSuccess("已更新当前项");
 //                            alert(json2.tips);
                 } else  {
                     alert(json2.errorMessage)
@@ -125,9 +125,9 @@
         };
         $.ajax(options);
     };
-    var updateIndexThrottle=throttle3(updateIndex,500);
-    $(function (event) {
-        $('textarea').keydown(function (event) {
+    var updateIndexThrottle=throttle3(updateIndex,200);
+    var bindEvent=function ($textarea) {
+        $textarea.keydown(function (event) {
 //            console.log(event.keyCode)
             if (event.keyCode == 83/*S*/ && event.ctrlKey) {
                 console.log('save');
@@ -135,8 +135,8 @@
                 var $self=$(this);
                 $self.addClass('selected');
                 var data={"servletAction":$('#servletAction1').val(),
-                "content":$self.val(),
-                "index":$self.data('index')}
+                    "content":$self.val(),
+                    "index":$self.data('index')}
                 var options = {
                     url: server_url + "/stubEdit/updateJsonOne",
                     type: "POST",
@@ -166,13 +166,30 @@
             updateIndexThrottle(selectedIndex);
         });
 
+    };
+    $(function (event) {
+        bindEvent($('textarea'));
+        adapterDivWidth($('textarea'),$('div.stubRange'));
+    });
+    //使div (class 为"stubRange")的宽度能够容得下所有的文本域
+    var adapterDivWidth=function ($textareas,$div) {
         var stubRangeDivWidth=0;
-        $('textarea').each(function () {
+        $textareas.each(function () {
             stubRangeDivWidth+=($(this).width()+3);
         });
         console.log("stubRangeDivWidth:"+stubRangeDivWidth);
-        $('div.stubRange').css('width',(stubRangeDivWidth+36));
-    })
+        $div.css('width',(stubRangeDivWidth+126));
+    };
+    var addOptionTextarea=function (self) {
+        var $stubRangeDiv=$('div.stubRange');
+        var $textareas=$stubRangeDiv.find('textarea');
+        var textareaLength=$textareas.length;
+        var $textareasHTML='<textarea data-index="'+textareaLength+'" style="float: left;" name="content" cols="85" rows="28">${stub }</textarea>';
+        $(self).before($textareasHTML);
+        $textareas=$stubRangeDiv.find('textarea');//因为新增了一个textarea,所以需要重新获取一遍,否则$textareas不包括新增的那个
+        bindEvent($($textareas.get(textareaLength)));//新增的那个textarea也得重新绑定事件
+        adapterDivWidth($textareas,$stubRangeDiv);
+    }
 </script>
 <body>
 <div>
@@ -197,11 +214,11 @@
                           <c:if test="${stubs.selectedIndex==status.index}">class="selected"</c:if> name="content"
                           cols="85" rows="28">${stub }</textarea>
                 </c:forEach>
-
+                <a style="float: left" onclick="addOptionTextarea(this)" href="javascript:void(0)">添加option</a>
             </div>
         </div>
         <br>
-        <input type="button" class="submit" onclick="saveAction();" value="确认更新" > &nbsp;<input type="submit" onclick="return addAction();" value="新增" >
+        <%--<input type="button" class="submit" onclick="saveAction();" value="确认更新" > &nbsp;--%><input type="submit" onclick="return addAction();" value="新增" >
     </form>
 
 </div>
