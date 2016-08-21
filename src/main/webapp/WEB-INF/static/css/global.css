@@ -129,11 +129,21 @@ table{
     background-color: rgba(241, 181, 253, 0.09);
     font-weight: bold;
     font-size: 12px;
+    border: 4px solid #4eba22;
 }
 
 div.stubRange {
-    width: 1200px;
-    overflow-x: scroll;
-    overflow-y: scroll;
-    height: 501px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 380px;
+    border: 2px solid #F1B5FD;
+    border-radius: 5px;
 }
+.stubRange textarea{
+    height:360px;
+}
+/*
+textarea.selected{
+    background-color: #f7dcfc;
+    font-weight: bold;
+}*/

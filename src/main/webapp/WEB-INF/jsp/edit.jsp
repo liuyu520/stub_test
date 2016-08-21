@@ -42,6 +42,7 @@
     }
 </style>
 <script type="text/javascript">
+    var server_url = "http://" + location.host+""//+"/convention";
     var hideMessage= function () {
         $('div.error').hide();
         $('div.success').hide();
@@ -103,7 +104,75 @@
         //采用Ajax 提交表单,页面不会跳转
 
         $('#formSave').ajaxSubmit(options);
-    }
+    };
+    var updateIndex=function (selectedIndex) {
+        var options = {
+            url: server_url + "/stubEdit/updateIndex",
+            type: "POST",
+            dataType: 'json',
+            data:{"index":selectedIndex,"servletAction":$('#servletAction1').val()},
+            success: function (json2) {
+                if (json2.result) {
+                    showSuccess("更新选中项成功");
+//                            alert(json2.tips);
+                } else  {
+                    alert(json2.errorMessage)
+                }
+            },
+            error: function (er) {
+                console.log(er)
+            }
+        };
+        $.ajax(options);
+    };
+    var updateIndexThrottle=throttle3(updateIndex,500);
+    $(function (event) {
+        $('textarea').keydown(function (event) {
+//            console.log(event.keyCode)
+            if (event.keyCode == 83/*S*/ && event.ctrlKey) {
+                console.log('save');
+                $('textarea').removeClass('selected');
+                var $self=$(this);
+                $self.addClass('selected');
+                var data={"servletAction":$('#servletAction1').val(),
+                "content":$self.val(),
+                "index":$self.data('index')}
+                var options = {
+                    url: server_url + "/stubEdit/updateJsonOne",
+                    type: "POST",
+                    dataType: 'json',
+                    data:data,
+                    success: function (json2) {
+                        if (json2.result) {
+                            showSuccess("更新成功");
+//                            alert(json2.tips);
+                        } else  {
+                            alert(json2.errorMessage)
+                        }
+                    },
+                    error: function (er) {
+                        console.log(er)
+                    }
+                };
+                $.ajax(options);
+            }
+        }).click(function (event) {
+            var $self=$(this);
+            var selectedIndex=$self.data('index');
+            updateIndexThrottle(selectedIndex);
+        }).focus(function (event) {
+            var $self=$(this);
+            var selectedIndex=$self.data('index');
+            updateIndexThrottle(selectedIndex);
+        });
+
+        var stubRangeDivWidth=0;
+        $('textarea').each(function () {
+            stubRangeDivWidth+=($(this).width()+3);
+        });
+        console.log("stubRangeDivWidth:"+stubRangeDivWidth);
+        $('div.stubRange').css('width',(stubRangeDivWidth+36));
+    })
 </script>
 <body>
 <div>
@@ -121,13 +190,15 @@
 <div>
     <form action="<%=path%>/stubEdit/updateJson" method="post" id="formSave" >
         <input type="hidden" id="servletAction2" name="servletAction" VALUE="${servletAction}" >
-        <div class="stubRange">
-            <c:forEach items="${stubs.stubs }" var="stub" varStatus="status">
-                <textarea data-index="${status.index}" style="float: left;width:500px;"
+        <div style="width: 100%;overflow-y: hidden;overflow-x: auto;">
+            <div class="stubRange">
+                <c:forEach items="${stubs.stubs }" var="stub" varStatus="status">
+                <textarea data-index="${status.index}" style="float: left;"
                           <c:if test="${stubs.selectedIndex==status.index}">class="selected"</c:if> name="content"
                           cols="85" rows="28">${stub }</textarea>
-            </c:forEach>
+                </c:forEach>
 
+            </div>
         </div>
         <br>
         <input type="button" class="submit" onclick="saveAction();" value="确认更新" > &nbsp;<input type="submit" onclick="return addAction();" value="新增" >
