@@ -42,6 +42,7 @@
     }
 </style>
 <script type="text/javascript">
+    var selectedIndex=${stubs.selectedIndex};
     var server_url = "http://" + location.host+""//+"/convention";
     var hideMessage= function () {
         $('div.error').hide();
@@ -63,19 +64,19 @@
         var index=action.lastIndexOf('/')
         $('#formSave').attr('action',action.substring(0,index+1)+"save");
         return true;
-    }
+    };
     var showError=function (message) {
         var $error=$('div.error');
         $error.show();
         $error.html(message);
         setTimeout(hideMessage,5000);
-    }
+    };
     var showSuccess=function (message) {
         var $success=$('div.success');
         $success.show();
         $success.html(message);
         setTimeout(hideMessage,5000);
-    }
+    };
     var saveAction=function(){
         var servletActionPath=$('#servletAction1').val();
         if(!servletActionPath){
@@ -105,15 +106,20 @@
 
         $('#formSave').ajaxSubmit(options);
     };
-    var updateIndex=function (selectedIndex) {
+    var updateIndex=function (selectedIndex2) {
+        if(selectedIndex2==window.selectedIndex){
+            console.log('selectedIndex:'+window.selectedIndex);
+            return;
+        }
         var options = {
             url: server_url + "/stubEdit/updateIndex",
             type: "POST",
             dataType: 'json',
-            data:{"index":selectedIndex,"servletAction":$('#servletAction1').val()},
+            data:{"index":selectedIndex2,"servletAction":$('#servletAction1').val()},
             success: function (json2) {
                 if (json2.result) {
                     showSuccess("已更新当前项");
+                    window.selectedIndex=selectedIndex2;
 //                            alert(json2.tips);
                 } else  {
                     alert(json2.errorMessage)
@@ -202,8 +208,10 @@
 <a target="_blank" href="<%=path%>/">stub接口列表</a>&nbsp;&nbsp;<a target="_blank" href="<%=path%>/old_content">stub历史记录</a>
 <br>
 访问地址: <a target="_blank" href="${url}">${url}</a>
-<div class="error" >${errorMessage}</div>
-<div class="success" >${tips}</div>
+<div style="height: 22px;" >
+    <div class="error" >${errorMessage}</div>
+    <div class="success" >${tips}</div>
+</div>
 <div>
     <form action="<%=path%>/stubEdit/updateJson" method="post" id="formSave" >
         <input type="hidden" id="servletAction2" name="servletAction" VALUE="${servletAction}" >
