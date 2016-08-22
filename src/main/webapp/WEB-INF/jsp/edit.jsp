@@ -135,14 +135,14 @@
     var bindEvent=function ($textarea) {
         $textarea.keydown(function (event) {
 //            console.log(event.keyCode)
-            if (event.keyCode == 83/*S*/ && event.ctrlKey) {
+            if ((event.keyCode == 83/*S*/||event.keyCode == 88/*X*/ )&& event.ctrlKey) {
                 console.log('save');
                 $('textarea').removeClass('selected');
                 var $self=$(this);
                 $self.addClass('selected');
                 var data={"servletAction":$('#servletAction1').val(),
                     "content":$self.val(),
-                    "index":$self.data('index')}
+                    "index":$self.data('index')};
                 var options = {
                     url: server_url + "/stubEdit/updateJsonOne",
                     type: "POST",
@@ -219,7 +219,7 @@
             <div class="stubRange">
                 <c:forEach items="${stubs.stubs }" var="stub" varStatus="status">
                 <textarea data-index="${status.index}" style="float: left;"
-                          <c:if test="${stubs.selectedIndex==status.index}">class="selected"</c:if> name="content"
+                          <c:if test="${stubs.selectedIndex==status.index}">class="selected"</c:if> name="content" placeholder="Ctrl+X 或者Ctrl+S 保存"
                           cols="85" rows="28">${stub }</textarea>
                 </c:forEach>
                 <a style="float: left" onclick="addOptionTextarea(this)" href="javascript:void(0)">添加option</a>
