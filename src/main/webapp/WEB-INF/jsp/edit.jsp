@@ -132,35 +132,40 @@
         $.ajax(options);
     };
     var updateIndexThrottle=throttle3(updateIndex,200);
+    var updateOneOption = function (self) {
+        $('textarea').removeClass('selected');
+        var $self = $(self);
+        $self.addClass('selected');
+        var data = {
+            "servletAction": $('#servletAction1').val(),
+            "content": $self.val(),
+            "index": $self.data('index')
+        };
+        var options = {
+            url: server_url + "/stubEdit/updateJsonOne",
+            type: "POST",
+            dataType: 'json',
+            data: data,
+            success: function (json2) {
+                if (json2.result) {
+                    showSuccess("更新成功");
+//                            alert(json2.tips);
+                } else {
+                    alert(json2.errorMessage)
+                }
+            },
+            error: function (er) {
+                console.log(er)
+            }
+        };
+        $.ajax(options);
+    };
     var bindEvent=function ($textarea) {
         $textarea.keydown(function (event) {
 //            console.log(event.keyCode)
             if ((event.keyCode == 83/*S*/||event.keyCode == 88/*X*/ )&& event.ctrlKey) {
                 console.log('save');
-                $('textarea').removeClass('selected');
-                var $self=$(this);
-                $self.addClass('selected');
-                var data={"servletAction":$('#servletAction1').val(),
-                    "content":$self.val(),
-                    "index":$self.data('index')};
-                var options = {
-                    url: server_url + "/stubEdit/updateJsonOne",
-                    type: "POST",
-                    dataType: 'json',
-                    data:data,
-                    success: function (json2) {
-                        if (json2.result) {
-                            showSuccess("更新成功");
-//                            alert(json2.tips);
-                        } else  {
-                            alert(json2.errorMessage)
-                        }
-                    },
-                    error: function (er) {
-                        console.log(er)
-                    }
-                };
-                $.ajax(options);
+                updateOneOption(this);
             }
         }).click(function (event) {
             var $self=$(this);
