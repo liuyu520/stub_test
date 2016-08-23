@@ -42,7 +42,7 @@
     }
 </style>
 <script type="text/javascript">
-    var selectedIndex=${stubs.selectedIndex};
+    var selectedIndex= <c:choose><c:when test="${stubs.selectedIndex==null}">0</c:when><c:otherwise>${stubs.selectedIndex}</c:otherwise></c:choose>;
     var server_url = "http://" + location.host+""//+"/convention";
     var hideMessage= function () {
         $('div.error').hide();
@@ -132,6 +132,7 @@
         $.ajax(options);
     };
     var updateIndexThrottle=throttle3(updateIndex,200);
+//    var updateIndexThrottle=updateIndex;
     var updateOneOption = function (self) {
         $('textarea').removeClass('selected');
         var $self = $(self);
