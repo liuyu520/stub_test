@@ -98,6 +98,7 @@
             }
             ,
             error: function (er) {
+                modifyServerUrl(er);
                 console.log(er);
                 alert(er.responseText);
             }
@@ -105,6 +106,11 @@
         //采用Ajax 提交表单,页面不会跳转
 
         $('#formSave').ajaxSubmit(options);
+    };
+    var modifyServerUrl = function (er) {
+        if ((er.status && er.status == '404') || (er.statusText && er.statusText == 'Not Found')) {
+            server_url += "/stub_test";
+        }
     };
     var updateIndex=function (selectedIndex2) {
         if(selectedIndex2==window.selectedIndex){
@@ -126,6 +132,7 @@
                 }
             },
             error: function (er) {
+                modifyServerUrl(er);
                 console.log(er)
             }
         };
@@ -156,6 +163,7 @@
                 }
             },
             error: function (er) {
+                modifyServerUrl(er);
                 console.log(er)
             }
         };
