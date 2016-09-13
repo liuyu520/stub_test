@@ -125,6 +125,9 @@
             success: function (json2) {
                 if (json2.result) {
                     showSuccess("已更新当前项");
+                    var self=$('textarea').removeClass('selected')[selectedIndex2];
+                    var $self = $(self);
+                    $self.addClass('selected');
                     window.selectedIndex=selectedIndex2;
 //                            alert(json2.tips);
                 } else  {
