@@ -43,7 +43,7 @@
 </style>
 <script type="text/javascript">
     var selectedIndex= <c:choose><c:when test="${stubs.selectedIndex==null}">0</c:when><c:otherwise>${stubs.selectedIndex}</c:otherwise></c:choose>;
-    var server_url = "http://" + location.host+""//+"/convention";
+    var server_url = "<%=path %>"//+"/convention";
     var hideMessage= function () {
         $('div.error').hide();
         $('div.success').hide();
@@ -108,7 +108,9 @@
         $('#formSave').ajaxSubmit(options);
     };
     var modifyServerUrl = function (er) {
-        if ((er.status && er.status == '404') || (er.statusText && er.statusText == 'Not Found')) {
+        if(!er.status||(er.statusText && er.statusText == 'error')){// {readyState: 0, responseText: "", status: 0, statusText: "error"}
+            alert('请确认服务是否启动')
+        }else if ((er.status && er.status == '404') || (er.statusText && er.statusText == 'Not Found')) {
             server_url += "/stub_test";
         }
     };
