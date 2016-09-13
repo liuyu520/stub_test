@@ -136,7 +136,7 @@ public class StubEditController {
             String prefix = getPrefix(servletAction);
             System.out.println("set key:"+prefix + servletAction+"selectedIndex");
             //session的key,型如:stub//request_a
-            SpringMVCUtil.saveObject(prefix + servletAction+"selectedIndex",String.valueOf(index));
+            SpringMVCUtil.saveGlobalObject(prefix + servletAction + "selectedIndex", String.valueOf(index));
             return Constant2.RESPONSE_RIGHT_RESULT;
         }
         return Constant2.RESPONSE_WRONG_RESULT;
