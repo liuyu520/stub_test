@@ -2,13 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.kunlunsoft</groupId>
   <artifactId>stub_test</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <packaging>war</packaging>
   <properties>
 		<java.version>1.6</java.version>
 		<tomcat.version>7.0.26</tomcat.version>
 		<struts2.version>2.3.4.1</struts2.version>
-		<spring.version>3.2.3.RELEASE</spring.version>
+		<spring.version>4.3.2.RELEASE</spring.version>
 	</properties>
   <dependencies>
   	<dependency>
