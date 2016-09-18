@@ -13,10 +13,6 @@ import javax.servlet.ServletContextEvent;
 public class ApplicationListener extends ContextLoaderListener {
     public ApplicationListener(WebApplicationContext context) {
         super(context);
-        ConfigurableEnvironment environment = (ConfigurableEnvironment) context.getEnvironment();
-        System.out.println("ApplicationListener contructor");
-        System.out.println(environment);
-        environment.setActiveProfiles("dev");
     }
 
     public ApplicationListener() {
@@ -29,7 +25,12 @@ public class ApplicationListener extends ContextLoaderListener {
         super.contextInitialized(event);
         WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
         ConfigurableEnvironment environment = (ConfigurableEnvironment) ctx.getEnvironment();
+        String sysType = environment.getProperty("HOME");
+        System.out.println("sysType:" + sysType);
         System.out.println(environment);
+//        System.out.println(environment.getSystemEnvironment().get("sysType2"));//不能读取
+        System.out.println(environment.getSystemEnvironment().get("HOME"));//可以读取
         environment.setActiveProfiles("dev");
+//        System.out.println("username:"+environment.getProperty("username"));//不能读取
     }
 }
