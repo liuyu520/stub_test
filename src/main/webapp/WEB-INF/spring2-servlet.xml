@@ -17,7 +17,7 @@
     </bean>
     <!--简化环境变量的调用,如果不初始化org.springframework.context.support.PropertySourcesPlaceholderConfigurer,
     则调用方式为:#{systemEnvironment['USER']}   -->
-    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" />
     <bean id="zookeeperSources"
           class="com.dangdang.config.service.support.spring.ConfigGroupSourceFactory"
           factory-method="create">
