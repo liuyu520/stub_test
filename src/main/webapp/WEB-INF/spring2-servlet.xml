@@ -10,7 +10,40 @@
            http://www.springframework.org/schema/mvc 
            http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
-	<!-- HandlerMapping -->
+
+    <bean id="fileConfigProfile" class="com.dangdang.config.service.file.FileConfigProfile">
+        <constructor-arg name="fileEncoding" value="UTF-8"/>
+        <constructor-arg name="contentType" value="properties"/>
+    </bean>
+
+
+    <bean id="zookeeperSources"
+          class="com.dangdang.config.service.support.spring.ConfigGroupSourceFactory"
+          factory-method="create">
+        <constructor-arg name="configGroups">
+            <list>
+                <!--fileconfig-->
+                <bean id="restfulapiProperties" class="com.dangdang.config.service.file.FileConfigGroup">
+                    <constructor-arg name="configProfile" ref="fileConfigProfile"/>
+                    <constructor-arg name="location" value="classpath:/com/app2.properties"/>
+                </bean>
+                <bean id="alisecurityProperties" class="com.dangdang.config.service.file.FileConfigGroup">
+                    <constructor-arg name="configProfile" ref="fileConfigProfile"/>
+                    <constructor-arg name="location" value="classpath:/com/app.properties"/>
+                </bean>
+
+                <!--zookeeper-->
+
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!--<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+    <property name="propertySources" ref="zookeeperSources" />
+    </bean>-->
+
+
+    <!-- HandlerMapping -->
 	<bean
 		class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
 

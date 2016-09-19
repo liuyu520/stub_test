@@ -26,15 +26,15 @@ public class PropertySourceBeanController {
         System.out.println(val);
 
         val = envMyBean.getProperty("username");
-        System.out.println(val);
+        System.out.println("username:" + val);
 
         val = envMyBean.getProperty("address");
-        System.out.println(val);
+        System.out.println("address:" + val);
 
         val = envMyBean.getProperty("country");
-        System.out.println(val);
-        System.out.println(envMyBean.getStudent());
-        System.out.println("address:" + envMyBean.getStudent().getAddress());
+        System.out.println("country:" + val);
+//        System.out.println(envMyBean.getStudent());
+//        System.out.println("address:" + envMyBean.getStudent().getAddress());
         System.out.println("RedisHelper username:" + RedisHelper.getUsername());
         System.out.println("RedisHelper address:" + RedisHelper.getAddress());
         return HWJacksonUtils.getJsonP(val);
