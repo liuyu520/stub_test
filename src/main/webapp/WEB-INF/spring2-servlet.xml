@@ -12,35 +12,34 @@
 
 
     <bean id="fileConfigProfile" class="com.dangdang.config.service.file.FileConfigProfile">
-        <constructor-arg name="fileEncoding" value="UTF-8"/>
-        <constructor-arg name="contentType" value="properties"/>
+        <constructor-arg name="fileEncoding" value="UTF-8" />
+        <constructor-arg name="contentType"  value="properties" />
     </bean>
-
-
+    <!--简化环境变量的调用,如果不初始化org.springframework.context.support.PropertySourcesPlaceholderConfigurer,
+    则调用方式为:#{systemEnvironment['USER']}   -->
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
     <bean id="zookeeperSources"
           class="com.dangdang.config.service.support.spring.ConfigGroupSourceFactory"
           factory-method="create">
         <constructor-arg name="configGroups">
-            <list>
-                <!--fileconfig-->
-                <bean id="restfulapiProperties" class="com.dangdang.config.service.file.FileConfigGroup">
-                    <constructor-arg name="configProfile" ref="fileConfigProfile"/>
-                    <constructor-arg name="location" value="classpath:/com/app2.properties"/>
-                </bean>
-                <bean id="alisecurityProperties" class="com.dangdang.config.service.file.FileConfigGroup">
-                    <constructor-arg name="configProfile" ref="fileConfigProfile"/>
-                    <constructor-arg name="location" value="classpath:/com/app.properties"/>
-                </bean>
+        <list>
+        <!--fileconfig-->
+            <bean id="restfulapiProperties" class="com.dangdang.config.service.file.FileConfigGroup">
+                <constructor-arg name="configProfile" ref="fileConfigProfile" />
+                <constructor-arg name="location" value="classpath:/com/app2.properties" />
+            </bean>
+            <bean id="alisecurityProperties" class="com.dangdang.config.service.file.FileConfigGroup">
+                <constructor-arg name="configProfile" ref="fileConfigProfile" />
+                <constructor-arg name="location" value="classpath:/${USER}/app.properties" />
+            </bean>
 
-                <!--zookeeper-->
+        <!--zookeeper-->
 
-            </list>
+        </list>
         </constructor-arg>
-    </bean>
+        </bean>
 
-    <!--<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-    <property name="propertySources" ref="zookeeperSources" />
-    </bean>-->
+
 
 
     <!-- HandlerMapping -->
