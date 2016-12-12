@@ -173,12 +173,12 @@ public class StubEditController {
      * @return
      */
 	@RequestMapping("/save")
-	public String save(HttpServletRequest request,Model model, @RequestParam(required = true)String servletAction,@RequestParam(required = true)String[] content){
-		if(!ValueWidget.isNullOrEmpty(servletAction)){
+    public String save(HttpServletRequest request, Model model, @RequestParam(required = true) String servletAction, @RequestParam(required = true) String content/*不能设置String数组,否则会以逗号截断*/) {
+        if(!ValueWidget.isNullOrEmpty(servletAction)){
 			servletAction = XSSUtil.deleteXSS(servletAction);
-			ReadAndWriteResult readAndWriteResult = saveStub(request, servletAction, content[0]);
-			if (!afterDeal(model, servletAction, content[0], readAndWriteResult)) return "edit";
-		}
+            ReadAndWriteResult readAndWriteResult = saveStub(request, servletAction, content);
+            if (!afterDeal(model, servletAction, content, readAndWriteResult)) return "edit";
+        }
 		return Constant2.SPRINGMVC_REDIRECT_PREFIX+"stubEdit/search?servletAction="+servletAction;
 	}
 
