@@ -30,10 +30,10 @@ import java.io.IOException;
 public class StubEditController {
     private static String getPrefix(String servletAction) {
         String prefix = null;
-        if (servletAction.startsWith(Constant2.Slash)) {
-            prefix = Constant2.stub_folder_no_Slash;
+        if (servletAction.startsWith(Constant2.SLASH)) {
+            prefix = Constant2.STUB_FOLDER_NO_SLASH;
         } else {
-            prefix = Constant2.stub_folder;
+            prefix = Constant2.STUB_FOLDER;
         }
         return prefix;
     }
@@ -203,11 +203,11 @@ public class StubEditController {
      */
 	private ReadAndWriteResult updateStub(HttpServletRequest request, String servletAction, String content) {
 		String prefix = getPrefix(servletAction);
-        return HWUtils.updateStub(request, prefix + servletAction + Constant2.stub_file_Suffix, content, SystemHWUtil.CHARSET_UTF, 0);
+        return HWUtils.updateStub(request, prefix + servletAction + Constant2.STUB_FILE_SUFFIX, content, SystemHWUtil.CHARSET_UTF, 0);
     }
 	private ReadAndWriteResult saveStub(HttpServletRequest request,  String servletAction, String content) {
 		String prefix = getPrefix(servletAction);
-        return HWUtils.saveStub(request, prefix + servletAction + Constant2.stub_file_Suffix, content, SystemHWUtil.CHARSET_UTF, 0);
+        return HWUtils.saveStub(request, prefix + servletAction + Constant2.STUB_FILE_SUFFIX, content, SystemHWUtil.CHARSET_UTF, 0);
     }
 
 	/***

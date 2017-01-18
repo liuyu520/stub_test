@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>yunmasoft.com</groupId>
 			<artifactId>oa_framework</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+            <version>0.0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -154,8 +154,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 
